@@ -1,0 +1,16 @@
+body {  
+    margin: 0;  
+    padding: 0;  
+    height: 100vh;  
+    overflow: hidden;  
+    cursor: none;  
+    transition: background 1s ease; /* Smooth transition for background changes */  
+}  
+
+#galaxyCanvas {  
+    width: 100%;  
+    height: 100%;  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+}  
