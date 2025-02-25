@@ -4,8 +4,8 @@ body {
     height: 100vh;
     overflow: hidden;
     cursor: none;
-    transition: background 1s ease; /* Smooth transition for background changes */
-    touch-action: none; /* Prevents default touch behaviors like pinch-zoom or scroll */
+    transition: background 2s ease-in-out;
+    touch-action: none; /* Prevents default touch behaviors for smooth scrolling */
 }
 
 #galaxyCanvas {
