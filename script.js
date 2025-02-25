@@ -6,14 +6,14 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
-let currentPattern = 0; // Start with the green star at index 0
+let currentPattern = 0;
 const patterns = [
     {
-        background: 'radial-gradient(circle, #00251a, #00cc66, #66ff99)', // Dark teal to vibrant green gradient
-        particleColor: (life) => `hsla(${120 + life / 5}, 90%, 70%, ${life / 180})`, // Rich green with glowing effect
-        particleShape: 'star', // Beautiful green star
+        background: 'radial-gradient(circle, #00251a, #00cc66, #66ff99)', // Dark teal to vibrant green
+        particleColor: (life) => `hsla(${120 + life / 5}, 90%, 70%, ${life / 180})`, // Rich green glow
+        particleShape: 'star',
         particleSpeed: 0.5,
-        particleSize: 14 // Slightly larger for more prominence
+        particleSize: 14
     },
     {
         background: 'radial-gradient(circle, #1a0033, #0d001a, #000)', // Cosmic purple-black
@@ -23,11 +23,11 @@ const patterns = [
         particleSize: 10
     },
     {
-        background: 'linear-gradient(135deg, #2b0047, #ff3366, #ff9900)', // Purple to fiery orange
-        particleColor: (life) => `hsla(${20 + life / 5}, 100%, 60%, ${life / 180})`, // Warm orange-red
-        particleShape: 'wave',
+        background: 'radial-gradient(circle, #332600, #ffcc00, #ffff66)', // Dark gold to bright yellow
+        particleColor: (life) => `hsla(${60 + life / 5}, 90%, 70%, ${life / 180})`, // Vibrant yellow glow
+        particleShape: 'star',
         particleSpeed: 0.5,
-        particleSize: 10
+        particleSize: 12
     },
     {
         background: 'linear-gradient(135deg, #330000, #ff3333, #ff6666)', // Deep red to bright red
@@ -35,20 +35,6 @@ const patterns = [
         particleShape: 'flame',
         particleSpeed: 0.7,
         particleSize: 11
-    },
-    {
-        background: 'radial-gradient(circle, #001f3f, #00ccff, #00ff99)', // Oceanic blue to teal
-        particleColor: (life) => `hsla(${160 + life / 5}, 90%, 65%, ${life / 180})`, // Teal-cyan shimmer
-        particleShape: 'spiral',
-        particleSpeed: 0.5,
-        particleSize: 14
-    },
-    {
-        background: 'linear-gradient(90deg, #4b0082, #ff00cc, #ffcc00)', // Indigo to magenta-gold
-        particleColor: (life) => `hsla(${300 + life / 5}, 85%, 70%, ${life / 180})`, // Magenta-gold fade
-        particleShape: 'hexagon',
-        particleSpeed: 0.7,
-        particleSize: 8
     },
     {
         background: 'radial-gradient(circle, #2d0040, #6600cc, #cc00ff)', // Deep violet to neon purple
@@ -97,7 +83,6 @@ class Particle {
             y = cy + Math.sin(rot) * outerRadius;
             ctx.lineTo(x, y);
             rot += step;
-
             x = cx + Math.cos(rot) * innerRadius;
             y = cy + Math.sin(rot) * innerRadius;
             ctx.lineTo(x, y);
@@ -106,7 +91,7 @@ class Particle {
         ctx.lineTo(cx, cy - outerRadius);
         ctx.closePath();
         ctx.fillStyle = this.getColor();
-        ctx.shadowBlur = 20; // Enhanced glow for the green star
+        ctx.shadowBlur = 20;
         ctx.shadowColor = this.getColor();
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -120,56 +105,6 @@ class Particle {
         ctx.closePath();
         ctx.fillStyle = this.getColor();
         ctx.shadowBlur = 20;
-        ctx.shadowColor = this.getColor();
-        ctx.fill();
-        ctx.shadowBlur = 0;
-    }
-
-    drawWave(cx, cy) {
-        ctx.beginPath();
-        ctx.moveTo(cx - this.size, cy);
-        for (let i = -this.size; i <= this.size; i += 2) {
-            ctx.lineTo(cx + i, cy + Math.sin(i * 0.2 + this.angle) * this.size * 0.5);
-        }
-        ctx.strokeStyle = this.getColor();
-        ctx.lineWidth = 2;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.getColor();
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-        ctx.closePath();
-    }
-
-    drawSpiral(cx, cy) {
-        ctx.beginPath();
-        const spiralRadius = this.size * (1 - this.life / 180);
-        ctx.moveTo(cx, cy);
-        for (let i = 0; i < 7; i++) {
-            const angle = i * Math.PI / 3 + this.angle;
-            const r = spiralRadius * i / 7;
-            ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
-        }
-        ctx.strokeStyle = this.getColor();
-        ctx.lineWidth = 2.5;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.getColor();
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-        ctx.closePath();
-    }
-
-    drawHexagon(cx, cy) {
-        ctx.beginPath();
-        for (let i = 0; i < 6; i++) {
-            const angle = (Math.PI / 3) * i + this.angle;
-            const x = cx + this.size * Math.cos(angle);
-            const y = cy + this.size * Math.sin(angle);
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.fillStyle = this.getColor();
-        ctx.shadowBlur = 15;
         ctx.shadowColor = this.getColor();
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -241,12 +176,6 @@ class Particle {
             this.drawStar(0, 0, 5, this.size, this.size * 0.4);
         } else if (this.pattern.particleShape === 'flame') {
             this.drawFlame(0, 0);
-        } else if (this.pattern.particleShape === 'wave') {
-            this.drawWave(0, 0);
-        } else if (this.pattern.particleShape === 'spiral') {
-            this.drawSpiral(0, 0);
-        } else if (this.pattern.particleShape === 'hexagon') {
-            this.drawHexagon(0, 0);
         } else if (this.pattern.particleShape === 'flower') {
             this.drawFlower(0, 0);
         } else if (this.pattern.particleShape === 'burst') {
@@ -261,7 +190,7 @@ class Particle {
 window.addEventListener('mousemove', (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         particles.push(new Particle(mouse.x, mouse.y, patterns[currentPattern]));
     }
 });
@@ -272,7 +201,7 @@ canvas.addEventListener('touchstart', (e) => {
     const touch = e.touches[0];
     mouse.x = touch.clientX;
     mouse.y = touch.clientY;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         particles.push(new Particle(mouse.x, mouse.y, patterns[currentPattern]));
     }
 });
@@ -282,7 +211,7 @@ canvas.addEventListener('touchmove', (e) => {
     const touch = e.touches[0];
     mouse.x = touch.clientX;
     mouse.y = touch.clientY;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
         particles.push(new Particle(mouse.x, mouse.y, patterns[currentPattern]));
     }
 });
@@ -294,8 +223,13 @@ function changePattern() {
 }
 
 function animate() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    if (particles.length > 100) {
+        particles = particles.slice(-100);
+    }
+    
     particles = particles.filter(p => p.life > 0);
     particles.forEach(particle => {
         particle.update();
